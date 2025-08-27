@@ -1,0 +1,17 @@
+﻿
+@model List<POlimpicos.Models.Edicao>
+
+<h2>Edições Olímpicas</h2>
+<a href="/Cidades/Cadastrar">
+    Cadastrar nova cidade
+</a>
+<ul>
+    @foreach (var edicao in Model)
+    {
+        <li>
+            <a href="/Edicao/Atletas/@edicao.Codedicao">
+                @edicao.Ano - @edicao.Sede
+            </a>
+        </li>
+    }
+</ul>

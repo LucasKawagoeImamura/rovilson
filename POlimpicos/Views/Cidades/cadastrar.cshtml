@@ -1,0 +1,29 @@
+﻿@model POlimpicos.Models.Cidade;
+
+
+
+<!doctype html>
+<html>
+    
+    <head>
+    <title></title>
+    <link href="~/css/def.css" rel="stylesheet" />
+    </head>
+        
+    <body>
+        <form asp-action="Cadastrar" method="Post">
+
+            <label>Nome da cidade:</label>
+            <input asp-for="NomeCidade" type="text" required />
+            <span asp-validation-for="NomeCidade"></span>
+
+            <label> Selecione o estado da cidade</label>
+            <select asp-for="CodEstado" asp-items="@(new SelectList(ViewBag.Estados, "codEstado", "nomeEstado"))" required>
+                <option value="">Selecione o Estado</option>
+            </select>
+
+            <button type="submit">Cadastrar cidade</button>
+
+        </form> 
+    </body>
+</html>

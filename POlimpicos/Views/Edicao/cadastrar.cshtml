@@ -1,0 +1,27 @@
+﻿@model POlimpicos.Models.Edicao;
+
+
+
+<!doctype html>
+<html>
+
+ <head>
+    <title></title>
+    <link href="~/css/def.css" rel="stylesheet" />
+ </head>
+
+ <body>
+    <form asp-action="Cadastrar" method="Post">
+
+        <label>Nome da sede:</label>
+        <input asp-for="Sede" type="text" required />
+        <span asp-validation-for="Sede"></span>
+
+        <label> Insira o ano que aconteceu:</label>
+        <input asp-for="Ano" type="text" placeholder="XXXX"/>
+
+        <button type="submit">Cadastrar Edição</button>
+
+    </form>
+ </body>
+</html>

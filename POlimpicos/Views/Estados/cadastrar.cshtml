@@ -1,0 +1,25 @@
+﻿@model POlimpicos.Models.Estado;
+
+
+
+<!doctype html>
+<html>
+
+<head>
+    <title></title>
+    <link href="~/css/def.css" rel="stylesheet" />
+</head>
+
+<body>
+    <form asp-action="Cadastrar" method="Post">
+
+        <label>Nome do estado:</label>
+        <input asp-for="nomeEstado" type="text" required />
+        <span asp-validation-for="nomeEstado"></span>
+
+       
+        <button type="submit">Cadastrar Estado</button>
+
+    </form>
+</body>
+</html>

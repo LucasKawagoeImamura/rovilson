@@ -1,0 +1,24 @@
+﻿@model POlimpicos.Models.Modalidades;
+
+
+
+<!doctype html>
+<html>
+
+<head>
+    <title></title>
+    <link href="~/css/def.css" rel="stylesheet" />
+</head>
+
+<body>
+    <form asp-action="Cadastrar" method="Post">
+
+        <label>Nome da modalidade:</label>
+        <input asp-for="nomeModalidade" type="text" required />
+        <span asp-validation-for="nomeModalidade"></span>
+
+        <button type="submit">Cadastrar Modalidade</button>
+
+    </form>
+</body>
+</html>

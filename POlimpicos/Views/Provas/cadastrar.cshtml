@@ -1,0 +1,29 @@
+﻿@model POlimpicos.Models.Provas;
+
+
+
+<!doctype html>
+<html>
+
+<head>
+    <title></title>
+    <link href="~/css/def.css" rel="stylesheet" />
+</head>
+
+<body>
+    <form asp-action="Criar" method="Post">
+
+        <label>Nome da prova:</label>
+        <input asp-for="nomeProva" type="text" required />
+        <span asp-validation-for="nomeProva"></span>
+
+        <label>Selecione a modalidade da prova:</label>
+        <select asp-for="codModalidade" asp-items="@(new SelectList(ViewBag.Modalidades, "codModalidade", "nomeModalidade"))" required>
+            <option value="">Selecione a modalidade da prova</option>
+        </select>
+
+        <button type="submit">Cadastrar Provas</button>
+
+    </form>
+</body>
+</html>

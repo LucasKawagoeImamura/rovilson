@@ -1,0 +1,48 @@
+﻿@model IEnumerable<POlimpicos.Models.Atletas>
+@{
+    ViewBag.Title = "Atletas";
+}
+
+<div class="d-flex justify-content-between align-items-end mb-3">
+    <h1 class="page-title">Atletas</h1>
+    <div class="page-subtitle">Total: <strong>@(Model?.Count() ?? 0)</strong></div>
+</div>
+
+<div class="table-wrap card-soft">
+    <table class="table table-hover align-middle mb-0">
+        <thead>
+            <tr>
+                <th style="width:80px;">Código</th>
+                <th>Nome</th>
+                <th>Nascimento</th>
+                <th>Cidade / Estado</th>
+                <th>Modalidade (amostra)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model == null || !Model.Any())
+            {
+                <tr><td colspan="5" class="text-center text-muted py-4">Nenhum atleta cadastrado.</td></tr>
+            }
+            else
+            {
+                foreach (var a in Model)
+                {
+                    <tr>
+                        <td>@a.codAtleta</td>
+                        <td>
+                            <a asp-controller="Edicao" asp-action="Detalhes" asp-route-id="@a.codAtleta">@a.nomeAtleta</a>
+                        </td>
+                        <td>@a.dataNascimento</td>
+                        <td>@($"{a.CidadeNascimento} / {a.EstadoNascimento}")</td>
+                        <td>@(string.IsNullOrWhiteSpace(a.modalidade) ? "—" : a.modalidade)</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<a href="/Atletas/Criar">
+    Cadastrar novo atleta
+</a>

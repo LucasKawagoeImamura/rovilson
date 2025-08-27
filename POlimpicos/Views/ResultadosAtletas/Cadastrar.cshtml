@@ -1,0 +1,45 @@
+﻿@model POlimpicos.Models.Resultadosatletas;
+
+
+
+<!doctype html>
+<html>
+
+<head>
+    <title></title>
+    <link href="~/css/def.css" rel="stylesheet" />
+</head>
+
+<body>
+    <form asp-action="Cadastrar" method="Post">
+
+        <label>Selecione o nome do Atleta:</label>
+        <select asp-for="codAtleta" asp-items="@(new SelectList(ViewBag.Atletas, "codAtleta", "nomeAtleta"))" required>
+            <option value="">Selecione o atleta</option>
+        </select>
+
+        <label>Selecione a prova realizada:</label>
+        <select asp-for="codProva" asp-items="@(new SelectList(ViewBag.Provas, "codProva", "nomeProva"))" required>
+            <option value="">Selecione a Prova</option>
+        </select>
+
+
+        <label>Selecione a Edição:</label>
+        <select asp-for="codEdicao" asp-items="@(new SelectList(ViewBag.Edi ?? new List<Edicao>(), "CodEdicao", "Ano"))" required>
+            <option value="">Selecione a Edicao</option>
+        </select>
+
+        <label>Selecione a posição do atleta:</label>
+        <input asp-for="resultado" type="text" required />
+        <span asp-validation-for="resultado"></span>
+
+        <label>Medalha:</label>
+        <input asp-for="medalha" type="text" required />
+        <span asp-validation-for="medalha"></span>
+
+
+        <button type="submit">Cadastrar Resultado</button>
+
+    </form>
+</body>
+</html>
