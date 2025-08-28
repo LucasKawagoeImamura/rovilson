@@ -122,6 +122,88 @@ namespace POlimpicos.Controllers
             return View(atletas);
         }
 
+        public IActionResult Detalhes(int id)
+        {
+            Atletas atleta = null;
+            List<(string Prova, string Edicao, string Resultado, string Medalha)> participacoes = new();
+
+            using (var conn = db.GetConnection())
+            {
+                string query = @"
+               SELECT 
+             a.codAtleta,a.nomeAtleta,a.dataNascimento,a.sexo,c.codCidade, c.nomeCidade,e.nomeEstado,
+             m.codModalidade, m.nomeModalidade,p.nomeProva,r.resultado,r.medalha 
+                 FROM atletas a
+                 JOIN cidades c ON c.codCidade = a.codCidade
+                 JOIN estados e ON e.codEstado = c.codEstado
+                 JOIN resultadosatletas r ON r.codAtleta = a.codAtleta
+                 JOIN provas p ON p.codProva = r.codProva
+                 JOIN modalidades m ON m.codModalidade = p.codModalidade
+                 WHERE a.codAtleta = @id";
+
+                var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        atleta = new Atletas
+                        {
+                            codAtleta = reader.GetInt32("codAtleta"),
+                            nomeAtleta = reader.GetString("nomeAtleta"),
+                            dataNascimento = reader.GetString("dataNascimento"),
+                            sexo = reader.GetChar("sexo"),
+                            CidadeNascimento = reader.GetString("nomeCidade"),
+                            codModalidade = reader.GetInt32("codModalidade"),
+                            modalidade = reader.GetString("nomeModalidade"),
+                            EstadoNascimento = reader.GetString("nomeEstado"),
+                            codCidade = reader.GetInt32("codCidade")
+                        };
+                    }
+                }
+
+                // Buscar participações
+                string participacaoQuery = @"
+                        SELECT p.nomeProva, e.ano, e.sede, r.resultado, r.medalha
+                        FROM resultadosatletas r
+                        JOIN provas p ON p.codProva = r.codProva
+                        JOIN edicao e ON e.codEdicao = r.codEdicao
+                        WHERE r.codAtleta = @id";
+
+                var cmd2 = new MySqlCommand(participacaoQuery, conn);
+                cmd2.Parameters.AddWithValue("@id", id);
+                using (var reader = cmd2.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        participacoes.Add((
+                            reader.IsDBNull(reader.GetOrdinal("nomeProva"))
+                                ? null
+                                : reader.GetString(reader.GetOrdinal("nomeProva")),
+
+                            $"{(reader.IsDBNull(reader.GetOrdinal("ano"))
+                                ? "?"
+                                : reader.GetInt32(reader.GetOrdinal("ano")).ToString())} - {(reader.IsDBNull(reader.GetOrdinal("sede"))
+                                ? "?"
+                                : reader.GetString(reader.GetOrdinal("sede")))}",
+
+                            reader.IsDBNull(reader.GetOrdinal("resultado"))
+                                ? null
+                                : reader.GetString(reader.GetOrdinal("resultado")),
+
+                            reader.IsDBNull(reader.GetOrdinal("medalha"))
+                                ? null
+                                : reader.GetString(reader.GetOrdinal("medalha"))
+                        ));
+                    }
+
+                }
+            }
+
+            ViewBag.Participacoes = participacoes;
+            return View(atleta);
+        }
 
     }
 }
